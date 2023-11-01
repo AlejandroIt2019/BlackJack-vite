@@ -1,0 +1,22 @@
+body, html{
+  background-color: blueviolet;
+  
+}
+
+header {
+  padding: 20px;
+  background-color: black;
+  color: white;
+  font-size: 27px;
+}
+
+.cards {
+  position: relative;
+  width: 140px;
+  margin-left: 30px;
+  margin-right: -80px;
+
+}
+.divCards {
+  height: 240px;
+}
