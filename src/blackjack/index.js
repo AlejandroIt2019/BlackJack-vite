@@ -1,5 +1,5 @@
-import {shuffle} from 'underscore'
-
+import { shuffle } from 'underscore'
+import {cardValue, createDeck, requestACard, turnComputer} from './usecases'
 (() => {
     'use strict'
     //declaracioens constantes
@@ -11,79 +11,43 @@ import {shuffle} from 'underscore'
           smallText = document.querySelectorAll('small'),
           divCards = document.querySelectorAll('.divCards')
     let deck = [],
-        pointsPlayers = []
+        pointsPlayers = [];
     //comenzar juego
-    const startGame = (numPlayers = 2) => {
-        deck = createDeck()
+        const startGame = (numPlayers = 2) => {
+        deck = createDeck(type, special)
         pointsPlayers = []
         divCards.forEach(ele => ele.innerHTML = '');
         smallText.forEach(ele => ele.textContent = 0);
         for (let i = 0; i < numPlayers; i++) {
             pointsPlayers.push(0)
         }
-        console.log(pointsPlayers);
     }
     //crear baraja
-    const createDeck = () => {
-        deck = []
-        for (let i = 2; i <= 10; i++) {
-            for (const types of type) {
-                deck.push(i + types)
-            }
-        }
-        for (const specials of special) {
-            for (const types of type) {
-                deck.push(specials + types)
-            }
-        }
-        return shuffle(deck)
-    }
     //pedir carta
-    const requestACard = () => {
-        if (deck.length === '0') {
-            throw new Error('error no hay cartas');
-        }
-        return deck.pop()
-    }
     //parsear valor de la carta 
-    const cardValue = (card) => {
-        const value = card.substring(0, card.length - 1)
-        return (isNaN(value)) ?
-            (value === 'A') ? 11 : 10
-            : value * 1
-    }
     //determinatewinner
+    //turn computer    
+    //createCard
     const determinateWinner = () => {
         const [minimumPoints, computerPoints] = pointsPlayers
-      setTimeout(() => {
-          if (computerPoints === minimumPoints) {
-              alert('Es un empate')
-          } else if (computerPoints > 21) {
-              alert('El jugador 1 gana!')
-          } else if (minimumPoints > 21) {
-              alert('La computadora gana')
-          } else {
-              alert('La computadora gana')
-          }
-        
-      }, 600);
-    }
-    //turn computer
-    const turnComputer = (minimumPoints) => {
-        let computerPoints = 0;
-        do {
-            const request = requestACard();
-            computerPoints = accPoints(request, pointsPlayers.length - 1);
-            createCard(request, pointsPlayers.length - 1);
-        } while ((computerPoints < minimumPoints) && (minimumPoints <= 21));
-        determinateWinner()
+        setTimeout(() => {
+            if (computerPoints === minimumPoints) {
+                alert('Es un empate')
+            } else if (computerPoints > 21) {
+                alert('El jugador 1 gana!')
+            } else if (minimumPoints > 21) {
+                alert('La computadora gana')
+            } else {
+                alert('La computadora gana')
+            }
+    
+        }, 600);
     }
     const accPoints = (card, turn) => {
         pointsPlayers[turn] = pointsPlayers[turn] + cardValue(card)
         smallText[turn].textContent = pointsPlayers[turn]
         return pointsPlayers[turn]
     }
-    //createCard
     const createCard = (card, turn) => {
         const imgCard = document.createElement('img')
         imgCard.classList.add('cards')
@@ -98,26 +62,25 @@ import {shuffle} from 'underscore'
     })
     btnRequest.addEventListener('click', e => {
         e.preventDefault()
-        const request = requestACard()
+        const request = requestACard(deck)
         let playerPoints = accPoints(request, 0)
         createCard(request, 0)
         if (playerPoints === 21) {
             console.warn('Felicidades sacaste 21!');
             btnRequest.disabled = true
             btnStop.disabled = true
-            turnComputer(playerPoints)
+            turnComputer(playerPoints, deck)
         }
         if (playerPoints > 21) {
             console.warn('Has perdido, tienes más de 21');
-            btnRequest.disabled = true  
+            btnRequest.disabled = true
             btnStop.disabled = true
-            turnComputer(playerPoints)  
+            turnComputer(playerPoints, deck)
         }
-        
     })
     btnStop.addEventListener('click', e => {
         btnRequest.disabled = true
         btnStop.disabled = true
-        turnComputer(pointsPlayers[0])
+        turnComputer(pointsPlayers[0], deck)
     })
-  })()
+})()
