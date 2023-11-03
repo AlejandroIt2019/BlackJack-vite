@@ -2,6 +2,7 @@ import { shuffle } from 'underscore'
 import { createDeck } from "./usecases/create-deck";
 import { requestACard } from "./usecases/request-a-card";
 import { cardValue } from "./usecases/card-value";
+import { turnComputer } from "./usecases/turn-computer";
 
 (() => {
     'use strict'
@@ -50,15 +51,6 @@ import { cardValue } from "./usecases/card-value";
         }, 600);
     }
     //turn computer
-    const turnComputer = (minimumPoints) => {
-        let computerPoints = 0;
-        do {
-            const request = requestACard(deck);
-            computerPoints = accPoints(request, pointsPlayers.length - 1);
-            createCard(request, pointsPlayers.length - 1);
-        } while ((computerPoints < minimumPoints) && (minimumPoints <= 21));
-        determinateWinner()
-    }
     const accPoints = (card, turn) => {
         pointsPlayers[turn] = pointsPlayers[turn] + cardValue(card)
         smallText[turn].textContent = pointsPlayers[turn]
