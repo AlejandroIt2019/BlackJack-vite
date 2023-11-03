@@ -1,9 +1,4 @@
-import { shuffle } from 'underscore'
-import { createDeck } from "./usecases/create-deck";
-import { requestACard } from "./usecases/request-a-card";
-import { cardValue } from "./usecases/card-value";
-import { turnComputer } from "./usecases/turn-computer";
-
+import { cardValue, createDeck, requestACard, determinateWinner, turnComputer } from "./usecases/archivo-barril";
 (() => {
     'use strict'
     //declaracioens constantes
@@ -26,31 +21,6 @@ import { turnComputer } from "./usecases/turn-computer";
             pointsPlayers.push(0)
         }
     }
-    //crear baraja
-
-    //pedir carta
-
-    //parsear valor de la carta 
-
-    //determinatewinner
-    //turn computer    
-    //createCard
-    const determinateWinner = () => {
-        const [minimumPoints, computerPoints] = pointsPlayers
-        setTimeout(() => {
-            if (computerPoints === minimumPoints) {
-                alert('Es un empate')
-            } else if (computerPoints > 21) {
-                alert('El jugador 1 gana!')
-            } else if (minimumPoints > 21) {
-                alert('La computadora gana')
-            } else {
-                alert('La computadora gana')
-            }
-
-        }, 600);
-    }
-    //turn computer
     const accPoints = (card, turn) => {
         pointsPlayers[turn] = pointsPlayers[turn] + cardValue(card)
         smallText[turn].textContent = pointsPlayers[turn]
@@ -77,18 +47,18 @@ import { turnComputer } from "./usecases/turn-computer";
             console.warn('Felicidades sacaste 21!');
             btnRequest.disabled = true
             btnStop.disabled = true
-            turnComputer(playerPoints, deck)
+            turnComputer(playerPoints, deck, accPoints, pointsPlayer, createCard)
         }
         if (playerPoints > 21) {
             console.warn('Has perdido, tienes más de 21');
             btnRequest.disabled = true
             btnStop.disabled = true
-            turnComputer(playerPoints, deck)
+            turnComputer(playerPoints, deck, accPoints, pointsPlayers, createCard)
         }
     })
     btnStop.addEventListener('click', e => {
         btnRequest.disabled = true
         btnStop.disabled = true
-        turnComputer(pointsPlayers[0], deck)
+        turnComputer(pointsPlayers[0], deck, accPoints, pointsPlayers, createCard)
     })
 })()
