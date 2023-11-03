@@ -1,4 +1,7 @@
 import {shuffle} from 'underscore'
+import {createDeck} from "./usecases/create-deck";
+import { requestACard } from "./usecases/request-a-card";
+import { cardValue } from "./usecases/card-value";
 
 (() => {
     'use strict'
@@ -14,7 +17,7 @@ import {shuffle} from 'underscore'
         pointsPlayers = []
     //comenzar juego
     const startGame = (numPlayers = 2) => {
-        deck = createDeck()
+        deck = createDeck(type, special)
         pointsPlayers = []
         divCards.forEach(ele => ele.innerHTML = '');
         smallText.forEach(ele => ele.textContent = 0);
@@ -24,34 +27,11 @@ import {shuffle} from 'underscore'
         console.log(pointsPlayers);
     }
     //crear baraja
-    const createDeck = () => {
-        deck = []
-        for (let i = 2; i <= 10; i++) {
-            for (const types of type) {
-                deck.push(i + types)
-            }
-        }
-        for (const specials of special) {
-            for (const types of type) {
-                deck.push(specials + types)
-            }
-        }
-        return shuffle(deck)
-    }
+    
     //pedir carta
-    const requestACard = () => {
-        if (deck.length === '0') {
-            throw new Error('error no hay cartas');
-        }
-        return deck.pop()
-    }
+    
     //parsear valor de la carta 
-    const cardValue = (card) => {
-        const value = card.substring(0, card.length - 1)
-        return (isNaN(value)) ?
-            (value === 'A') ? 11 : 10
-            : value * 1
-    }
+    
     //determinatewinner
     const determinateWinner = () => {
         const [minimumPoints, computerPoints] = pointsPlayers
@@ -72,7 +52,7 @@ import {shuffle} from 'underscore'
     const turnComputer = (minimumPoints) => {
         let computerPoints = 0;
         do {
-            const request = requestACard();
+            const request = requestACard(deck);
             computerPoints = accPoints(request, pointsPlayers.length - 1);
             createCard(request, pointsPlayers.length - 1);
         } while ((computerPoints < minimumPoints) && (minimumPoints <= 21));
@@ -98,7 +78,7 @@ import {shuffle} from 'underscore'
     })
     btnRequest.addEventListener('click', e => {
         e.preventDefault()
-        const request = requestACard()
+        const request = requestACard(deck)
         let playerPoints = accPoints(request, 0)
         createCard(request, 0)
         if (playerPoints === 21) {
