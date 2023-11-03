@@ -1,3 +1,8 @@
+/**
+ * 
+ * @param {Array<Number>} pointsPlayers 
+ */
+
 export const determinateWinner = (pointsPlayers) => {
     const [minimumPoints, computerPoints] = pointsPlayers
     setTimeout(() => {
