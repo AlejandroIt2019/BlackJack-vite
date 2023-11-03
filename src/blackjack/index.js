@@ -1,4 +1,4 @@
-import { cardValue, createDeck, requestACard, determinateWinner, turnComputer } from "./usecases/archivo-barril";
+import { cardValue, createDeck, requestACard, turnComputer } from "./usecases/archivo-barril";
 (() => {
     'use strict'
     //declaracioens constantes
@@ -47,7 +47,7 @@ import { cardValue, createDeck, requestACard, determinateWinner, turnComputer } 
             console.warn('Felicidades sacaste 21!');
             btnRequest.disabled = true
             btnStop.disabled = true
-            turnComputer(playerPoints, deck, accPoints, pointsPlayer, createCard)
+            turnComputer(playerPoints, deck, accPoints, pointsPlayers, createCard)
         }
         if (playerPoints > 21) {
             console.warn('Has perdido, tienes más de 21');
@@ -59,6 +59,6 @@ import { cardValue, createDeck, requestACard, determinateWinner, turnComputer } 
     btnStop.addEventListener('click', e => {
         btnRequest.disabled = true
         btnStop.disabled = true
-        turnComputer(pointsPlayers[0], deck, accPoints, pointsPlayers, createCard)
+        turnComputer(pointsPlayers[0], deck, accPoints,pointsPlayers, createCard)
     })
 })()
