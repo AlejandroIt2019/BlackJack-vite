@@ -7,7 +7,7 @@ import { determinateWinner } from "./determine-winner";
  * @param {*} deck 
  * @param {*} accPoints 
  * @param {*} pointsPlayers 
- * @param {*} createCard
+ * @param {*} createCard2
  * función turno de la computadora, devuelve un ganador. 
  */ 
 export const turnComputer = (minimumPoints, deck, accPoints, pointsPlayers, createCard) => {
